@@ -1,0 +1,9 @@
+div .navigation {
+    display: inline-flex;
+}
+
+.navigation li {
+    list-style: none;
+    float: left;
+}
+

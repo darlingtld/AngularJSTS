@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html ng-app="DemoModule">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>AngularJS DEMO</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/demo.css"/>
+</head>
+<body ng-controller="mainController">
+<div class="container-fluid text-center">
+    <span ng-bind="person.name"></span>
+    <span ng-bind="person.gender"></span>
+    <span ng-bind="person.contact"></span>
+
+    <p>Name : <input type="text" ng-model="name"></p>
+
+    <h1>Hello {{name}}</h1>
+
+    <div user-directive></div>
+
+    <div user-directive2></div>
+
+    <div ng-controller="userController">
+
+        <input name="userId" ng-model="userId"/><br/>
+        <button ng-click="checkUser()">Verify</button>
+        <br/>
+        <strong>{{message}}</strong>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in users">
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="employee in employees">
+                <td>{{employee.name}}</td>
+                <td>{{employee.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-controller="breadcrumbController">
+        <ul class="navigation">
+            <li ng-repeat="breadcrumb in breadcrumbs">
+                <span class="divider">/{{$index}}</span>
+                <ng-switch on="$last">
+                    <span ng-switch-when="true">{{breadcrumb.name}}</span>
+                    <span ng-switch-default><a href="{{breadcrumb.path}}">{{breadcrumb.name}}</a></span>
+                </ng-switch>
+            </li>
+        </ul>
+    </div>
+
+    <div ng-controller="switchController">
+        <select ng-model="selection" ng-options="item for item in items">
+        </select>
+        <code>selection={{selection}}</code>
+        <hr/>
+        <div class="animate-switch-container"
+             ng-switch on="selection">
+            <div class="animate-switch" ng-switch-when="settings">Settings Div</div>
+            <div class="animate-switch" ng-switch-when="home">Home Span</div>
+            <div class="animate-switch" ng-switch-default>default</div>
+        </div>
+    </div>
+
+    <div ng-controller="filterController">
+        <p>{{now|date : 'fullDate'}}</p>
+
+        <p>{{now|date : 'yyyy-MM-dd HH:mm:ss'}}</p>
+
+        <p>{{1000|currency : '￥'}}</p>
+
+        <p>{{999.12342134|number : 2}}</p>
+
+        <p>{{'uppercase string'|uppercase}}</p>
+
+        <p><input ng-model="rString"><span>{{rString|reverse}}</span></p>
+    </div>
+
+    <a href="#/corp">corp</a>
+    <a href="#/division">division</a>
+    <a href="#/team">team</a>
+    <a href="#/person/lingda">who</a>
+    <ng-view></ng-view>
+
+</div>
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+<script type="text/javascript" src="javascript/demo.js"></script>
+</body>
+
+</html>
