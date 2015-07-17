@@ -63,7 +63,7 @@ demoModule.controller('userController', function ($scope, $q, $http) {
         path: '#/new'
     }]
 
-    $http.get('http://localhost:3000/employees').success(function (data) {
+    $http.get('http://localhost:8080').success(function (data) {
         $scope.employees = data;
     })
 });

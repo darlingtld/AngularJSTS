@@ -1,10 +1,12 @@
 /**
  * Created by tangl9 on 2015-07-16.
  */
-var express = require('express');
-var app = express();
+var http = require('http');
 
-app.get('/employees', function (req, res) {
+function dealWithWebRequest(request, response) {
+    response.setHeader('Access-Control-Allow-Origin', "*");
+    response.writeHead(200, {"Content-Type": "text/plain"});
+
     var employees = [{
         name: 'Less',
         email: 'less@abc.com'
@@ -15,14 +17,11 @@ app.get('/employees', function (req, res) {
         name: 'Bobby',
         email: 'booby@abc.com'
     }]
-    res.end(employees);
-})
+    response.write(JSON.stringify(employees));
+    response.end();
+}
 
-var server = app.listen(8081, function () {
-
-    var host = server.address().address
-    var port = server.address().port
-
-    console.log("Example app listening at http://%s:%s", host, port)
-
-})
+var webserver = http.createServer(dealWithWebRequest).listen(8080, "127.0.0.1");
+webserver.once('listening', function () {
+    console.log('Server running at http://127.0.0.1:8080/');
+});
