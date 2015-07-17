@@ -7,3 +7,8 @@ div .navigation {
     float: left;
 }
 
+div.pagination li {
+    list-style: none;
+    float: left;
+}
+

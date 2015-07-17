@@ -17,5 +17,15 @@ app.get('/employees', function (req, res) {
     res.set('Access-Control-Allow-Origin', "*");
     res.send(JSON.stringify(employees));
 });
+
+app.get('/musician/:name', function (req, res) {
+
+    // Get /musician/Matt
+    console.log(req.params.name)
+    // => Matt
+
+    res.send('{"id": 1,"name":"Matt", "band":"BBQ Brawlers"}');
+});
+
 app.listen(3001);
 console.log('Listening on port 3001...');

@@ -21,6 +21,11 @@
 
     <div user-directive2></div>
 
+    <pagination num-pages="tasks.pageCount"
+                current-page="tasks.currentPage"
+                on-select-page="selectPage(page)">
+    </pagination>
+
     <div ng-controller="userController">
 
         <input name="userId" ng-model="userId"/><br/>
