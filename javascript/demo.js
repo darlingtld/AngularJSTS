@@ -9,14 +9,15 @@ demoModule.controller('mainController', function ($scope) {
         gender: 'male',
         contact: '13402188638'
     }
-    $scope.tasks = {
-        pageCount: 4,
-        currentPage:1
+
+    $scope.show = function () {
+        return $scope.checked;
     };
-
-
 })
 
+function sleep(d) {
+    for (var t = Date.now(); Date.now() - t <= d;);
+}
 demoModule.controller('userController', function ($scope, $q, $http) {
     $scope.verifyUser = function () {
         var userId = $scope.userId;
@@ -44,9 +45,6 @@ demoModule.controller('userController', function ($scope, $q, $http) {
         return true;
     }
 
-    function sleep(d) {
-        for (var t = Date.now(); Date.now() - t <= d;);
-    }
 
     $scope.users = [{
         name: 'Sara',
@@ -93,67 +91,6 @@ demoModule.controller('switchController', function ($scope) {
 demoModule.controller('filterController', function ($scope) {
     $scope.now = new Date();
 })
-
-demoModule.directive('userDirective', function () {
-    return {
-        template: 'Name: {{person.name}} Contact: {{person.contact}}'
-    };
-});
-
-demoModule.directive('userDirective2', function () {
-    return {
-        restrict: 'EA', //E = element, A = attribute, C = class, M = comment
-        scope: {
-            //@ reads the attribute value, = provides two-way binding, & works with functions
-            title: '@'
-        },
-        //template: '<div>{{ person.name }}</div>',
-        templateUrl: 'html/template.html',
-        //controller: controllerFunction, //Embed a custom controller in the directive
-        link: function ($scope, element, attrs) {
-        } //DOM manipulation
-    }
-});
-
-demoModule.directive('pagination', function () {
-        return {
-            restrict: 'E',
-            scope: {
-                numPages: '=',
-                currentPage: '=',
-                onSelectPage: '&'
-            },
-            templateUrl: 'html/pagination.html',
-            replace: true,
-            link: function (scope) {
-                scope.$watch('numPages', function (value) {
-                    scope.pages = [];
-                    for (var i = 1; i <= value; i++) {
-                        scope.pages.push(i);
-                    }
-                    if (scope.currentPage > value) {
-                        scope.selectPage(value);
-                    }
-                });
-
-                scope.isActive = function (page) {
-                    return scope.currentPage === page;
-                };
-                scope.selectPage = function (page) {
-                    if (!scope.isActive(page)) {
-                        scope.currentPage = page;
-                        scope.onSelectPage({page: page});
-                    }
-                };
-                scope.selectNext = function () {
-                    if (!scope.noNext()) {
-                        scope.selectPage(scope.currentPage + 1);
-                    }
-                };
-            }
-        }
-    }
-);
 
 demoModule.filter('reverse', function () {
     return function (input) {
@@ -204,3 +141,103 @@ demoModule.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/corp'
         });
 }]);
+
+
+demoModule.controller('directiveController', function ($scope) {
+    $scope.title = 'click to open';
+    $scope.text = 'Angular JS~~~';
+
+    $scope.expanders = [{
+        title : 'Grey\'s Anatomy',
+        text : 'Grey\'s AnatomyGrey\'s AnatomyGrey\'s Anatomy'
+    }, {
+        title : 'Prison Break',
+        text : 'Prison BreakPrison BreakPrison Break'
+    }, {
+        title : 'Person of Interest',
+        text : 'Person of InterestPerson of InterestPerson of Interest'
+    }];
+})
+
+demoModule.directive('hello', function () {
+    return {
+        restrict: 'E',
+        template: '<div>Hi there</div>',
+        replace: true
+    };
+});
+
+demoModule.directive('hello2', function () {
+    return {
+        restrict: 'E',
+        template: '<div>Hi there <span ng-transclude></span></div>',
+        transclude: true
+    };
+});
+
+demoModule.directive('expander', function () {
+    return {
+        restrict: 'EA',
+        replace: true,
+        transclude: true,
+        scope: {
+            title: '=expanderTitle'
+        },
+        template: '<div>'
+        + '<div class="title" ng-click="toggle()">{{title}}</div>'
+        + '<div class="body" ng-show="showMe" ng-transclude></div>'
+        + '</div>',
+        link: function (scope, element, attrs) {
+            scope.showMe = false;
+            scope.toggle = function toggle() {
+                scope.showMe = !scope.showMe;
+            }
+        }
+    }
+});
+
+demoModule.directive('accordion', function () {
+    return {
+        restrict: 'EA',
+        replace: true,
+        transclude: true,
+        template: '<div ng-transclude></div>',
+        controller: function () {
+            var expanders = [];
+            this.gotOpened = function (selectedExpander) {
+                angular.forEach(expanders, function (expander) {
+                    if (selectedExpander != expander) {
+                        expander.showMe = false;
+                    }
+                });
+            }
+            this.addExpander = function (expander) {
+                expanders.push(expander);
+            }
+        }
+    }
+});
+
+demoModule.directive('expander2', function () {
+    return {
+        restrict: 'EA',
+        replace: true,
+        transclude: true,
+        require: '^?accordion',
+        scope: {
+            title: '=expanderTitle'
+        },
+        template: '<div>'
+        + '<div class="title" ng-click="toggle()">{{title}}</div>'
+        + '<div class="body" ng-show="showMe" ng-transclude></div>'
+        + '</div>',
+        link: function (scope, element, attrs, accordionController) {
+            scope.showMe = false;
+            accordionController.addExpander(scope);
+            scope.toggle = function toggle() {
+                scope.showMe = !scope.showMe;
+                accordionController.gotOpened(scope);
+            }
+        }
+    }
+});

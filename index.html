@@ -12,27 +12,37 @@
     <span ng-bind="person.name"></span>
     <span ng-bind="person.gender"></span>
     <span ng-bind="person.contact"></span>
+    <hr>
+    <span>{{person.name}}</span>
+    <span>{{person.gender}}</span>
+    <span>{{person.contact}}</span>
+
+    <hr>
 
     <p>Name : <input type="text" ng-model="name"></p>
 
     <h1>Hello {{name}}</h1>
+    <hr>
 
-    <div user-directive></div>
 
-    <div user-directive2></div>
+    <hr>
+    <label><input type="checkbox" ng-model="checked" style="margin:0;">check box</label>
 
-    <pagination num-pages="tasks.pageCount"
-                current-page="tasks.currentPage"
-                on-select-page="selectPage(page)">
-    </pagination>
-
+    <div class="alert" ng-show="checked">
+        <strong>use ng-show!</strong>
+    </div>
+    <div class="alert alert-success" ng-if="checked">
+        <strong>use ng-if=checked</strong>
+    </div>
+    <div class="alert alert-info" ng-if="show();">
+        <strong>使用 ng-if=show();</strong>
+    </div>
     <div ng-controller="userController">
-
         <input name="userId" ng-model="userId"/><br/>
         <button ng-click="checkUser()">Verify</button>
         <br/>
         <strong>{{message}}</strong>
-
+        <hr>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -47,7 +57,7 @@
             </tr>
             </tbody>
         </table>
-
+        <hr>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -63,6 +73,7 @@
             </tbody>
         </table>
     </div>
+    <hr>
     <div ng-controller="breadcrumbController">
         <ul class="navigation">
             <li ng-repeat="breadcrumb in breadcrumbs">
@@ -74,7 +85,7 @@
             </li>
         </ul>
     </div>
-
+    <hr>
     <div ng-controller="switchController">
         <select ng-model="selection" ng-options="item for item in items">
         </select>
@@ -87,7 +98,7 @@
             <div class="animate-switch" ng-switch-default>default</div>
         </div>
     </div>
-
+    <hr>
     <div ng-controller="filterController">
         <p>{{now|date : 'fullDate'}}</p>
 
@@ -101,14 +112,38 @@
 
         <p><input ng-model="rString"><span>{{rString|reverse}}</span></p>
     </div>
-
+    <hr>
     <a href="#/corp">corp</a>
     <a href="#/division">division</a>
     <a href="#/team">team</a>
     <a href="#/person/lingda">who</a>
     <ng-view></ng-view>
 
+    <hr>
+    <div ng-controller="directiveController">
+        <div>
+            <span>something here</span>
+        </div>
+
+        <hello></hello>
+
+        <hello2>
+            <span>original stuff here</span>
+        </hello2>
+
+        <expander class='expander' expander-title='title'>
+            {{text}}
+        </expander>
+        <hr>
+
+        <accordion>
+            <expander2 class='expander' ng-repeat='expander in expanders' expander-title='expander.title'>
+                {{expander.text}}
+            </expander2>
+        </accordion>
+    </div>
 </div>
+
 <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
 <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>

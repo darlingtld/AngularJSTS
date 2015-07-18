@@ -7,8 +7,17 @@ div .navigation {
     float: left;
 }
 
-div.pagination li {
-    list-style: none;
-    float: left;
+.expander {
+    border: 1px solid wheat;
 }
 
+.expander>.title {
+    background-color: saddlebrown;
+    color: white;
+    padding: .1em .3em;
+    cursor: pointer;
+}
+
+.expander>.body {
+    padding: .1em .3em;
+}
