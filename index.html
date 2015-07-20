@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="css/demo.css"/>
 </head>
 <body ng-controller="mainController">
+<p class="text-center">Application started at: {{appStarted}}</p>
+
+<p class="text-center">
+    <span ng-bind="serviceStr"></span><br>
+    <span ng-bind="factoryStr"></span><br>
+    <span ng-bind="providerStr"></span><br>
+    <span ng-bind="angularStr"></span><br>
+    <span ng-bind="pi"></span><br>
+</p>
+
 <div class="container-fluid text-center">
     <span ng-bind="person.name"></span>
     <span ng-bind="person.gender"></span>

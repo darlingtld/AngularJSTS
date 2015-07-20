@@ -18,14 +18,16 @@ app.get('/employees', function (req, res) {
     res.send(JSON.stringify(employees));
 });
 
-app.get('/musician/:name', function (req, res) {
-
-    // Get /musician/Matt
-    console.log(req.params.name)
-    // => Matt
-
-    res.send('{"id": 1,"name":"Matt", "band":"BBQ Brawlers"}');
+app.get('/wait/:second', function (req, res) {
+    var second = req.params.second;
+    sleep(second * 1000)
+    res.set('Access-Control-Allow-Origin', "*");
+    res.send('{"name":"lingda"}');
 });
+
+function sleep(d) {
+    for (var t = Date.now(); Date.now() - t <= d;);
+}
 
 app.listen(3001);
 console.log('Listening on port 3001...');

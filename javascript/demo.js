@@ -3,7 +3,56 @@
  */
 demoModule = angular.module('DemoModule', ['ngRoute'])
 
-demoModule.controller('mainController', function ($scope) {
+demoModule.run(function ($rootScope) {
+    $rootScope.appStarted = new Date();
+});
+
+demoModule.service('demoService', function () {
+    this.sayHello = function () {
+        return "Injected using service!"
+    };
+});
+
+demoModule.factory('demoFactory', function () {
+    return {
+        sayHello: function () {
+            return "Injected using factory"
+        }
+    };
+});
+
+demoModule.provider('demoProvider', function () {
+
+    this.name = 'provider';
+
+    this.$get = function () {
+        var name = this.name;
+        return {
+            sayHello: function () {
+                return "Injected using " + name
+            }
+        }
+    };
+
+    this.setName = function (name) {
+        this.name = name;
+    };
+});
+
+//demoModule.config(['demoProviderProvider', function (p) {
+//    p.setName('config');
+//}]);
+
+demoModule.config(function (demoProviderProvider) {
+    demoProviderProvider.setName('config');
+});
+
+demoModule.value('angular', 'framework')
+
+demoModule.constant('PI', 3.14)
+
+
+demoModule.controller('mainController', function ($scope, demoService, demoFactory, demoProvider, angular, PI) {
     $scope.person = {
         name: 'Lingda',
         gender: 'male',
@@ -13,7 +62,13 @@ demoModule.controller('mainController', function ($scope) {
     $scope.show = function () {
         return $scope.checked;
     };
-})
+
+    $scope.serviceStr = demoService.sayHello();
+    $scope.factoryStr = demoFactory.sayHello()
+    $scope.providerStr = demoProvider.sayHello();
+    $scope.angularStr = angular;
+    $scope.pi = PI;
+});
 
 function sleep(d) {
     for (var t = Date.now(); Date.now() - t <= d;);
@@ -45,6 +100,14 @@ demoModule.controller('userController', function ($scope, $q, $http) {
         return true;
     }
 
+    //var responsePromise = $http.get('http://localhost:3001/wait/3');
+    //responsePromise.then(function (response) {
+    //    $scope.data = response.data;
+    //    console.log($scope.data)
+    //},function (response) {
+    //    throw new Error('Something went wrong...');
+    //});
+
 
     $scope.users = [{
         name: 'Sara',
@@ -65,9 +128,9 @@ demoModule.controller('userController', function ($scope, $q, $http) {
         path: '#/new'
     }]
 
-    $http.get('http://localhost:3001/employees').success(function (data) {
-        $scope.employees = data;
-    })
+    //$http.get('http://localhost:3001/employees').success(function (data) {
+    //    $scope.employees = data;
+    //})
 });
 
 demoModule.controller('breadcrumbController', function ($scope) {
@@ -148,14 +211,14 @@ demoModule.controller('directiveController', function ($scope) {
     $scope.text = 'Angular JS~~~';
 
     $scope.expanders = [{
-        title : 'Grey\'s Anatomy',
-        text : 'Grey\'s AnatomyGrey\'s AnatomyGrey\'s Anatomy'
+        title: 'Grey\'s Anatomy',
+        text: 'Grey\'s AnatomyGrey\'s AnatomyGrey\'s Anatomy'
     }, {
-        title : 'Prison Break',
-        text : 'Prison BreakPrison BreakPrison Break'
+        title: 'Prison Break',
+        text: 'Prison BreakPrison BreakPrison Break'
     }, {
-        title : 'Person of Interest',
-        text : 'Person of InterestPerson of InterestPerson of Interest'
+        title: 'Person of Interest',
+        text: 'Person of InterestPerson of InterestPerson of Interest'
     }];
 })
 
